@@ -1,7 +1,8 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import couchbase, { Bucket, Collection, GetResult } from "couchbase";
+import couchbase, { Bucket, BucketNotFlushableError, Cluster, Collection, GetResult, MutationResult, Scope } from "couchbase";
 import dotenv from 'dotenv';
+import { v4 as uuidv4 } from 'uuid';
 
 const typeDefs = `#graphql
     type Product {
@@ -11,8 +12,19 @@ const typeDefs = `#graphql
         tags: [String]
     }
 
+    input ProductInput {
+        name: String
+        price: Float
+        quantity: Int
+        tags: [String]
+    }
+
     type Query {
         getProduct(id: String): Product
+    }
+
+    type Mutation {
+        createProduct(product: ProductInput): Product
     }
 `;
 
@@ -30,6 +42,23 @@ const resolvers = {
             });
 
             return getResult.content;
+        }
+    },
+    Mutation: {
+        async createProduct(_, args, contextValue) {
+            const { product } = args;
+
+            const bucket: Bucket = contextValue.couchbaseCluster.bucket('store-bucket');
+            const collection: Collection = bucket.scope('products-scope').collection('products');
+
+            const key: string = uuidv4();
+
+            const createdMutation: MutationResult = await collection.insert(key, product).catch((error) => {
+                console.error(error);
+                throw error;
+            });
+
+            return product;
         }
     }
 };
