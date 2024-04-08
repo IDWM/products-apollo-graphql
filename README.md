@@ -1,9 +1,14 @@
- # Apollo Server GraphQL with Couchbase - README
+ # Apollo Server GraphQL with Couchbase
 
  This project is a Apollo GraphQL server that uses a Couchbase non-relational database as its data storage.
 
  ## Prerequisites:
- - **Node.js**: Make sure you have Node.js installed on your system. You can download it from [here](https://nodejs.org/en).
+- **Node.js**: Make sure you have Node.js installed on your system. You can check if Node.js is installed by running the following command in your terminal:
+    ```bash
+    node -v
+    ```
+    If Node.js is not installed, you can download it from [here](https://nodejs.org/en).
+- **Couchbase**: You need to have a Couchbase account and cluster set up. If you don't have one, you can sign up [here](https://cloud.couchbase.com/sign-in).
 
  ## Installation:
 
@@ -25,17 +30,13 @@
     npm install
     ```
 
- ## Couchbase Configuration:
-
- 4. Create an account on Couchbase if you don't have one already. You can sign up [here](https://cloud.couchbase.com/sign-in).
-
- 5. Create a `.env` file in the root of the project based on the `.env.example` file. This file will contain the configuration of your Couchbase cluster:
+ 4. Create a `.env` file in the root of the project based on the `.env.example` file. This file will contain the configuration of your Couchbase cluster:
 
     ```bash
     cp .env.example .env
     ```
 
- 6. Open the `.env` file and provide the required information:
+ 5. Open the `.env` file and provide the required information:
 
     ```bash
     COUCHBASE_CLUSTER=<CLUSTER_URL>
@@ -43,9 +44,7 @@
     COUCHBASE_PASSWORD=<YOUR_PASSWORD>
     ```
 
-## Starting the application:
-
- 7. Once you have configured your Couchbase cluster and provided the credentials in the `.env` file, you can start the application:
+ 6. Once you have configured your Couchbase cluster and provided the credentials in the `.env` file, you can start the application:
 
     ```bash
     npm start
